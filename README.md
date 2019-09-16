@@ -9,3 +9,7 @@ Microservicio para gestionar la información relativa a los horarios de las asig
 ## Motivación
 
 Principalmente, permitir a una posible futura aplicación acceder a la información relativa a las asignaturas de forma sencilla con el fin de poder crear horarios con facilidad para, por ejemplo, detectar conflictos entre dos asignaturas.
+
+## Implementación
+
+Se usará Ruby para desarrollar el microservicio.
