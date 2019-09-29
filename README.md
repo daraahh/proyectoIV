@@ -14,4 +14,13 @@ Principalmente, permitir a una posible futura aplicación acceder a la informaci
 
 ## Implementación
 
-Se usará Ruby para desarrollar el microservicio.
+Se usará el lenguaje ***Ruby*** para desarrollar el microservicio.
+- Framework para desarrollo web: [Sinatra](http://sinatrarb.com/)
+- Entorno virtual de desarrollo: [rbenv](https://github.com/rbenv/rbenv)
+
+Como base de datos se usará  [CouchDB](http://couchdb.apache.org/), de tipo NoSQL y que usa JSON para almacenar los datos.
+
+Para la integración continua se hará uso de [Travis CI](https://travis-ci.org/).
+
+Como sistema de log se usará [Logstash](https://www.elastic.co/products/logstash).
+- Haciendo uso de [LogStashLogger](https://github.com/dwbutler/logstash-logger), que extiende la clase `Logger` de Ruby para dar soporte a Logstash.
