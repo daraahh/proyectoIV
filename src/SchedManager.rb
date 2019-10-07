@@ -19,7 +19,7 @@ class SchedManager
 	end
 
 	def addAsignatura(info)
-		@data["asignaturas"] << info
+		@data["asignaturas"] = @data["asignaturas"].merge(info)
 		write2file()
 	end
 
