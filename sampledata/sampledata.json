@@ -1,25 +1,37 @@
 {
-	"asignaturas":[
-		{
-			"id": "110",
-			"nombre": "Fundamentos de programación",
-			"Grupo" : "B",
-			"teoria": "J-9:30",
-			"practicas": ["M-11:30","J-11:30","V-11:30"]
-		},
-		{
-			"id": "111",
-			"nombre": "Fundamentos del Software",
-			"Grupo" : "B",
-			"teoria": "X-11:30",
-			"practicas": ["J-11:30","M-11:30","L-11:30"]
-		},
-		{
-			"id": "112",
-			"nombre": "Fundamentos Físicos y Tecnológicos",
-			"Grupo" : "B",
-			"teoria": "L-9:30",
-			"practicas": ["V-11:30","L-11:30","M-11:30"]
-		}
-	]
+  "asignaturas": [
+    {
+      "id": "110",
+      "nombre": "Fundamentos de programación",
+      "Grupo": "B",
+      "teoria": "J-9:30",
+      "practicas": [
+        "M-11:30",
+        "J-11:30",
+        "V-11:30"
+      ]
+    },
+    {
+      "id": "111",
+      "nombre": "Fundamentos del Software",
+      "Grupo": "B",
+      "teoria": "X-11:30",
+      "practicas": [
+        "J-11:30",
+        "M-11:30",
+        "L-11:30"
+      ]
+    },
+    {
+      "id": "112",
+      "nombre": "Fundamentos Físicos y Tecnológicos",
+      "Grupo": "B",
+      "teoria": "L-9:30",
+      "practicas": [
+        "V-11:30",
+        "L-11:30",
+        "M-11:30"
+      ]
+    }
+  ]
 }
