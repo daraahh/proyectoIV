@@ -17,10 +17,10 @@ class TestProyecto < Test::Unit::TestCase
 
 	def test_add_asignatura
 		id_to_add = "1103"
-		to_add = {"id"=>id_to_add, "nombre"=>"Asignatura test", "Grupo"=>"F", "teoria"=>"J-9:30", "practicas"=>["M-11:30", "J-11:30", "V-11:30"]}
+		to_add = {id_to_add => {"nombre"=>"Asignatura test", "Grupo"=>"F", "teoria"=>"J-9:30", "practicas"=>["M-11:30", "J-11:30", "V-11:30"]}}
 		@manager.addAsignatura(to_add)
 		recovered = @manager.getAsignatura(id_to_add)
-		assert_equal(id_to_add,recovered["id"],"elemento recuperado es el añadido")
+		assert_equal(to_add[id_to_add],recovered,"elemento recuperado es el añadido")
 	end
 
 	def test_remove_asignatura
