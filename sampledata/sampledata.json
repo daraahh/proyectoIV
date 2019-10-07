@@ -1,7 +1,6 @@
 {
-  "asignaturas": [
-    {
-      "id": "110",
+  "asignaturas": {
+    "1100": {
       "nombre": "Fundamentos de programación",
       "Grupo": "B",
       "teoria": "J-9:30",
@@ -11,8 +10,7 @@
         "V-11:30"
       ]
     },
-    {
-      "id": "111",
+    "1101": {
       "nombre": "Fundamentos del Software",
       "Grupo": "B",
       "teoria": "X-11:30",
@@ -22,8 +20,7 @@
         "L-11:30"
       ]
     },
-    {
-      "id": "112",
+    "1102": {
       "nombre": "Fundamentos Físicos y Tecnológicos",
       "Grupo": "B",
       "teoria": "L-9:30",
@@ -33,5 +30,5 @@
         "M-11:30"
       ]
     }
-  ]
+  }
 }
