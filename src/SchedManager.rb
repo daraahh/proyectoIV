@@ -15,10 +15,7 @@ class SchedManager
 	end
 
 	def getAsignatura(id)
-		@data["asignaturas"].each do |a|
-			return asignatura = a if (a["id"] == id)
-		end
-		nil
+		@data["asignaturas"][id]
 	end
 
 	def addAsignatura(info)
