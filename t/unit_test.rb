@@ -22,4 +22,11 @@ class TestProyecto < Test::Unit::TestCase
 		assert_equal(id_to_add,recovered["id"],"elemento recuperado es el añadido")
 	end
 
+	def test_remove_asignatura
+		to_remove = "113"
+		@manager.removeAsignatura(to_remove)
+		recovered = @manager.getAsignatura(to_remove)
+		assert_equal(nil,recovered,"elemento ha sido eliminado")
+	end
+
 end
