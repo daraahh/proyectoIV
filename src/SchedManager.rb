@@ -24,9 +24,7 @@ class SchedManager
 	end
 
 	def removeAsignatura(id)
-		@data["asignaturas"].each do |a|
-			@data["asignaturas"].delete(a) if (a["id"] == id)
-		end
+		@data["asignaturas"].delete(id)
 		write2file()
 	end
 
