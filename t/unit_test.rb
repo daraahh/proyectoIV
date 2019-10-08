@@ -6,6 +6,12 @@ require_relative '../src/SchedManager.rb'
 class TestProyecto < Test::Unit::TestCase
 
 	setup do
+		#Generamos datos de prueba "limpios" para la ejecución de cada test
+		sampledata = {"asignaturas"=>{"1100"=>{"nombre"=>"Fundamentos de programación", "Grupo"=>"B", "teoria"=>"J-9:30", "practicas"=>["M-11:30", "J-11:30", "V-11:30"]}, "1101"=>{"nombre"=>"Fundamentos del Software", "Grupo"=>"B", "teoria"=>"X-11:30", "practicas"=>["J-11:30", "M-11:30", "L-11:30"]}, "1102"=>{"nombre"=>"Fundamentos Físicos y Tecnológicos", "Grupo"=>"B", "teoria"=>"L-9:30", "practicas"=>["V-11:30", "L-11:30", "M-11:30"]}, "1104"=>{"nombre"=>"ASIGNATURA A ELIMINAR", "Grupo"=>"B", "teoria"=>"L-9:30", "practicas"=>["V-11:30", "L-11:30", "M-11:30"]}}}
+		@path = File.join(File.dirname(__FILE__),'../sampledata/sampledata.json')
+		File.open(@path, "w") do |f|
+			f.puts JSON.pretty_generate(sampledata)
+		end
 		@manager = SchedManager.new
 	end
 
@@ -24,7 +30,7 @@ class TestProyecto < Test::Unit::TestCase
 	end
 
 	def test_remove_asignatura
-		to_remove = "1103"
+		to_remove = "1104"
 		@manager.removeAsignatura(to_remove)
 		recovered = @manager.getAsignatura(to_remove)
 		assert_equal(nil,recovered,"elemento ha sido eliminado")
