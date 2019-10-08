@@ -1,6 +1,7 @@
 # proyectoIV
 
 [![Build Status](https://travis-ci.com/daraahh/proyectoIV.svg?branch=master)](https://travis-ci.com/daraahh/proyectoIV)
+[![CircleCI](https://circleci.com/gh/daraahh/proyectoIV.svg?style=svg)](https://circleci.com/gh/daraahh/proyectoIV)
 
 Repositorio para el proyecto de la asignatura Infraestructura Virtual, curso 2019-20.
 
