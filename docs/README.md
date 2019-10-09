@@ -2,11 +2,11 @@
 [![CircleCI](https://circleci.com/gh/daraahh/proyectoIV.svg?style=svg)](https://circleci.com/gh/daraahh/proyectoIV)
 
 ## Lista de contenidos
-- [Descripción general](#descripcion-general)
-- [Motivacion](#motivacion)
-- [Implementación](#implementacion)
-- [Herramientas de construcción y prueba](#herramientas-de-construccion-y-prueba)
-- [Integración continua](#integracion-continua)
+- [Descripción general](#descripción-general)
+- [Motivacion](#motivación)
+- [Implementación](#implementación)
+- [Herramientas de construcción y prueba](#herramientas-de-construcción-y-prueba)
+- [Integración continua](#integración-continua)
 
 _________
 
@@ -15,7 +15,7 @@ _________
 Microservicio para gestionar la información relativa a los horarios de las asignaturas del Grado en Ingeniería Informática.
 
 
-## Motivacion
+## Motivación
 
 Principalmente, permitir a una posible futura aplicación acceder a la información relativa a las asignaturas de forma sencilla con el fin de poder crear horarios con facilidad para, por ejemplo, **detectar conflictos** entre dos asignaturas.
 
@@ -25,7 +25,7 @@ Adicionalmente, podría permitir **exportar** el horario creado por un usuario a
 
 TO-DO
 
-## Herramientas de construccion y prueba
+## Herramientas de construcción y prueba
 
 ### Prerrequisitos
 
