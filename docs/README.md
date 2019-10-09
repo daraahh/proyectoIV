@@ -2,8 +2,8 @@
 [![CircleCI](https://circleci.com/gh/daraahh/proyectoIV.svg?style=svg)](https://circleci.com/gh/daraahh/proyectoIV)
 
 # Lista de contenidos
-- [Descripción general](##Descripcion-general)
-- [Motivacion](##Motivacion)
+- [Descripción general](#descripcion-general)
+- [Motivacion](#motivacion)
 
 _________
 
