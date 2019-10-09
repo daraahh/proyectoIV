@@ -23,7 +23,14 @@ Adicionalmente, podría permitir **exportar** el horario creado por un usuario a
 
 ## Implementación
 
-TO-DO
+Se usará el lenguaje ***Ruby*** para desarrollar el microservicio, principalmente para reforzar lo aprendido en asignaturas previas.
+- Framework para desarrollo web: [Sinatra](http://sinatrarb.com/). Ya que el microservicio a desarrollar es bastante simple con este framework será suficiente y no será necesario usar frameworks algo más robustos como Padrino o Ruby on Rails. Además la documentación sobre este framework me ha parecido exepcional.
+- Entorno virtual de desarrollo: [rbenv](https://github.com/rbenv/rbenv). Porque permite manejar distintas versiones de Ruby de forma sencilla.
+
+Como base de datos se usará [CouchDB](http://couchdb.apache.org/), principalmente para indagar un poco sobre bases de datos NoSQL y porque usa JSON para almacenar los datos, algo que creo se va a ajustar a lo que quiero hacer.
+
+Como sistema de log se usará [Logstash](https://www.elastic.co/products/logstash).
+- Haciendo uso de [LogStashLogger](https://github.com/dwbutler/logstash-logger), que extiende la clase `Logger` de Ruby para dar soporte a Logstash.
 
 ## Herramientas de construcción y prueba
 
@@ -45,7 +52,11 @@ Esto instalará de forma automática las gemas indicadas en el fichero [Gemfile]
 
 ### Prueba
 
-rake vs make + justificacion. TO-DO
+Para automatizar la ejecución de tests hago uso de `rake`. Esta herrramienta de automatización está escrita en Ruby y el archivo `Rakefile`, que contiene las tareas a ejecutar, sigue la sintaxis de Ruby.
+
+La gran ventaja que encuentro en el uso de `rake` y `Rakefile` es que al tratarse Ruby de un lenguaje de alto nivel, nos permite abstraer de forma más cómoda las tareas a realizar y definir patrones fácilmente para identificar y ejecutar las diferentes tareas que definamos.
+
+Para ejecutar los tests, nos situamos en el directorio raíz del repositorio y ejecutamos:
 
 `rake`
 
@@ -57,9 +68,15 @@ rake vs make + justificacion. TO-DO
 
 ## Integración continua
 
-TO-DO
+Como sistemas de integración continua he decidido usar TravisCI y CircleCI.
 
 ### TravisCI
+
+TravisCI permite una configuración rápida y sencilla para la automatización de tests cuando se hace un push al repositorio.
+
+El archivo de configuración en uso es el mostrado abajo. Se especifica el lenguaje en uso y la versión del mismo, en mi caso 2.6.4.
+
+Por defecto, en el caso de Ruby, Travis ejecutará ls comandos `bundle install` para instalar las dependencias y `rake` para lanzar lo que tengamos configurado, en mi caso los tests. De este modo, no hace falta indicarlos en el fichero de configuración:
 
 ```
 language: ruby
@@ -70,18 +87,28 @@ rvm:
 
 ### CircleCI
 
+La configuración de Circle no es tan inmediata pero es bastante intuitiva y de fácil lectura debido a que sigue un formato `YAML`.
+
+Una de las ventajas que le encuentro frente a Travis es que Circle tiene un sistema de cache para los requerimientos de instalación por lo que las builds son más rápidas.
+
 ```
 version: 2
 jobs:
     build:
-        docker:
+		docker:
+			# Definimos el lenguaje y la versión. El OS por defecto es Ubuntu.
             - image: circleci/ruby:2.6.4
+		# Lista de los pasos que se van a llevar a cabo en el job
         steps:
+			# Clona nuestro repositorio
             - checkout
+			# Indicamos los comandos a ejecutar
             - run:
+				# Instalar las dependencias
                 name: Dependencias
                 command: bundle install
             - run:
+				#Ejecutar los tests
                 name: Tests
                 command: rake
 ```
