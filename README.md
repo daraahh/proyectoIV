@@ -50,6 +50,6 @@ La documentación adicional sobre [herramientas de instalación y prueba](https:
 
 ## Documentación adicional
 - [Página principal](https://daraahh.github.io/proyectoIV/)
-	- [Implementación](https://daraahh.github.io/proyectoIV/#implementacion)
-	- [Herramientas de construcción y prueba](https://daraahh.github.io/proyectoIV/#herramientas-de-construccio-y-prueba)
-	- [Integración continua](https://daraahh.github.io/proyectoIV/#integracion-continua)
+	- [Implementación](https://daraahh.github.io/proyectoIV/#implementación)
+	- [Herramientas de construcción y prueba](https://daraahh.github.io/proyectoIV/#herramientas-de-construcción-y-prueba)
+	- [Integración continua](https://daraahh.github.io/proyectoIV/#integración-continua)
