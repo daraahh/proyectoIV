@@ -78,7 +78,7 @@ El archivo de configuración en uso es el mostrado abajo. Se especifica el lengu
 
 Por defecto, en el caso de Ruby, Travis ejecutará ls comandos `bundle install` para instalar las dependencias y `rake` para lanzar lo que tengamos configurado, en mi caso los tests. De este modo, no hace falta indicarlos en el fichero de configuración:
 
-```
+```yml
 language: ruby
 rvm:
     - 2.6.4
@@ -91,24 +91,24 @@ La configuración de Circle no es tan inmediata pero es bastante intuitiva y de 
 
 Una de las ventajas que le encuentro frente a Travis es que Circle tiene un sistema de cache para los requerimientos de instalación por lo que las builds son más rápidas.
 
-```
+```yaml
 version: 2
 jobs:
-    build:
-		docker:
-			# Definimos el lenguaje y la versión. El OS por defecto es Ubuntu.
-            - image: circleci/ruby:2.6.4
-		# Lista de los pasos que se van a llevar a cabo en el job
-        steps:
-			# Clona nuestro repositorio
-            - checkout
-			# Indicamos los comandos a ejecutar
-            - run:
-				# Instalar las dependencias
-                name: Dependencias
-                command: bundle install
-            - run:
-				#Ejecutar los tests
-                name: Tests
-                command: rake
+  build:
+    docker:
+    #Definimos el lenguaje y la versión. El OS por defecto es Ubuntu.
+      - image: circleci/ruby:2.6.4
+    # Lista de los pasos que se van a llevar a cabo en el job
+    steps:
+    # Clona nuestro repositorio
+      - checkout
+    # Indicamos los comandos a ejecutar
+      - run:
+    # Instalar las dependencias
+        name: Dependencias
+        command: bundle install
+      - run:
+    #Ejecutar los tests
+        name: Tests
+        command: rake
 ```
