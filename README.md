@@ -21,9 +21,35 @@ Se usará el lenguaje ***Ruby*** para desarrollar el microservicio.
 - Framework para desarrollo web: [Sinatra](http://sinatrarb.com/)
 - Entorno virtual de desarrollo: [rbenv](https://github.com/rbenv/rbenv)
 
-Como base de datos se usará  [CouchDB](http://couchdb.apache.org/), de tipo NoSQL y que usa JSON para almacenar los datos.
-
-Para la integración continua se hará uso de [Travis CI](https://travis-ci.org/).
+Como base de datos se usará  [CouchDB](http://couchdb.apache.org/).
 
 Como sistema de log se usará [Logstash](https://www.elastic.co/products/logstash).
 - Haciendo uso de [LogStashLogger](https://github.com/dwbutler/logstash-logger), que extiende la clase `Logger` de Ruby para dar soporte a Logstash.
+
+La documentación adicional sobre las razones por las que se usarán dichos servicios y herramientas [se encuentra en el GitHub Pages del repositorio.](https://daraahh.github.io/proyectoIV/#Implementacion)
+
+
+## Instrucciones de instalación y prueba
+
+Descarga el repositorio mediante `git clone`.
+
+### Instalar dependencias
+
+Instala las dependencias indicadas en el [Gemfile](https://github.com/daraahh/proyectoIV/blob/master/Gemfile).
+
+`bundle install`
+
+### Ejecuta los tests
+
+Ejecuta el archivo [Rakefile](https://github.com/daraahh/proyectoIV/blob/master/Rakefile) para iniciar los tests:
+
+`rake`
+
+La documentación adicional sobre [herramientas de instalación y prueba](https://daraahh.github.io/proyectoIV/#herramientas-de-construccion-y-prueba) se encuentra en el GitHub Pages del repositorio.
+
+
+## Documentación adicional
+- [Página principal](https://daraahh.github.io/proyectoIV/)
+	- [Implementación](https://daraahh.github.io/proyectoIV/#implementacion)
+	- [Herramientas de construcción y prueba](https://daraahh.github.io/proyectoIV/#herramientas-de-construccio-y-prueba)
+	- [Integración continua](https://daraahh.github.io/proyectoIV/#integracion-continua)
