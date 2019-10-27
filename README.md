@@ -34,6 +34,7 @@ Ejecuta el archivo [Rakefile](https://github.com/daraahh/proyectoIV/blob/master/
 
 La documentación adicional sobre [herramientas de instalación y prueba](https://daraahh.github.io/proyectoIV/#herramientas-de-construcción-y-prueba) se encuentra en el GitHub Pages del repositorio.
 
+	buildtool: Rakefile
 
 ## Documentación adicional
 - [Página principal](https://daraahh.github.io/proyectoIV/)
