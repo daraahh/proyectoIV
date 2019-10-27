@@ -10,4 +10,4 @@ jobs:
                 command: bundle install
             - run:
                 name: Tests
-                command: rake
+                command: rake test
