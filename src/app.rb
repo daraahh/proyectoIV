@@ -40,4 +40,11 @@ class App < Sinatra::Base
 		end
 	end
 
+	put '/asignaturas' do
+		data = JSON.parse(request.body.read)
+		@manager.addAsignatura(data)
+		content_type :json
+		{:status => 'OK'}.to_json
+	end
+
 end
