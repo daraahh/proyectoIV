@@ -41,4 +41,13 @@ class AppFuncTest < Test::Unit::TestCase
 		assert_equal JSON.parse(last_response.body)['asignaturas']['1100']['nombre'], 'Fundamentos de programación'
 	end
 
+	def test_put_add_asignatura
+		id_to_add = "1103"
+		to_add = {id_to_add => {"nombre"=>"Asignatura test", "Grupo"=>"F", "teoria"=>"J-9:30", "practicas"=>["M-11:30", "J-11:30", "V-11:30"]}}
+		put '/asignaturas', to_add.to_json
+		assert last_response.ok?
+		assert_equal last_response.content_type, 'application/json'
+		assert_equal last_response.body, '{"status":"OK"}'
+	end
+
 end
