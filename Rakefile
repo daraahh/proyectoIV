@@ -11,3 +11,9 @@ Rake::TestTask.new do |task|
 	task.description = "Ejecución de tests unitarios"
 	task.test_files = FileList["t/unit_test.rb"]
 end
+
+Rake::TestTask.new do |task|
+	task.name = "functional_tests"
+	task.description = "Ejecución de tests funcionales"
+	task.test_files = FileList["t/functional_test.rb"]
+end
