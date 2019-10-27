@@ -34,4 +34,11 @@ class AppFuncTest < Test::Unit::TestCase
 		assert_equal last_response.body, '{"status":"Error: Asignatura no encontrada."}'
 	end
 
+	def test_get_asignaturas
+		get '/asignatura'
+		assert last_response.ok?
+		assert_equal last_response.content_type, 'application/json'
+		assert_equal JSON.parse(last_response.body)['asignaturas']['1100']['nombre'], 'Fundamentos de programación'
+	end
+
 end
