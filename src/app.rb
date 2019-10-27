@@ -47,4 +47,10 @@ class App < Sinatra::Base
 		{:status => 'OK'}.to_json
 	end
 
+	delete '/asignaturas/:id' do |id|
+		@manager.removeAsignatura(id)
+		content_type :json
+		{:status => 'OK'}.to_json
+	end
+
 end
