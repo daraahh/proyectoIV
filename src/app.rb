@@ -18,7 +18,7 @@ class App < Sinatra::Base
 		{:status => 'OK'}.to_json
 	end
 
-	get '/asignatura/:id' do |id|
+	get '/asignaturas/:id' do |id|
 		content_type :json
 		resultado = @manager.getAsignatura(id)
 		if resultado == nil
@@ -29,7 +29,7 @@ class App < Sinatra::Base
 		end
 	end
 
-	get '/asignatura' do
+	get '/asignaturas' do
 		content_type :json
 		resultado = @manager.getTodasAsignaturas
 		if resultado == nil
