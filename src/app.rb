@@ -29,4 +29,15 @@ class App < Sinatra::Base
 		end
 	end
 
+	get '/asignatura' do
+		content_type :json
+		resultado = @manager.getTodasAsignaturas
+		if resultado == nil
+			status 404
+			{:status => 'Error: Asignaturas no encontradas'}.to_json
+		else
+			resultado.to_json
+		end
+	end
+
 end

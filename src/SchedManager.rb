@@ -14,6 +14,10 @@ class SchedManager
 		end
 	end
 
+	def getTodasAsignaturas()
+		@data
+	end
+
 	def getAsignatura(id)
 		@data["asignaturas"][id]
 	end
