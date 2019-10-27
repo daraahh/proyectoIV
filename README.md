@@ -15,19 +15,6 @@ El microservicio permitirá recuperar la información de las asignaturas por cur
 
 Principalmente, permitir a una posible futura aplicación acceder a la información relativa a las asignaturas de forma sencilla con el fin de poder crear horarios con facilidad para, por ejemplo, **detectar conflictos** entre dos asignaturas. Adicionalmente, podría permitir **exportar** el horario creado por un usuario a un archivo PDF o como una imagen en formato JPEG, PNG...   
 
-## Implementación
-
-Se usará el lenguaje ***Ruby*** para desarrollar el microservicio.
-- Framework para desarrollo web: [Sinatra](http://sinatrarb.com/)
-- Entorno virtual de desarrollo: [rbenv](https://github.com/rbenv/rbenv)
-
-Como base de datos se usará  [CouchDB](http://couchdb.apache.org/).
-
-Como sistema de log se usará [Logstash](https://www.elastic.co/products/logstash).
-- Haciendo uso de [LogStashLogger](https://github.com/dwbutler/logstash-logger), que extiende la clase `Logger` de Ruby para dar soporte a Logstash.
-
-La documentación adicional sobre las razones por las que se usarán dichos servicios y herramientas [se encuentra en el GitHub Pages del repositorio.](https://daraahh.github.io/proyectoIV/#implementación)
-
 
 ## Instrucciones de instalación y prueba
 
@@ -43,7 +30,7 @@ Instala las dependencias indicadas en el [Gemfile](https://github.com/daraahh/pr
 
 Ejecuta el archivo [Rakefile](https://github.com/daraahh/proyectoIV/blob/master/Rakefile) para iniciar los tests:
 
-`rake`
+`rake test`
 
 La documentación adicional sobre [herramientas de instalación y prueba](https://daraahh.github.io/proyectoIV/#herramientas-de-construcción-y-prueba) se encuentra en el GitHub Pages del repositorio.
 
