@@ -15,6 +15,11 @@ class TestProyecto < Test::Unit::TestCase
 		@manager = SchedManager.new
 	end
 
+	def test_get_todas_asignaturas
+		recovered = @manager.getTodasAsignaturas()
+		assert_equal(recovered['asignaturas']['1100']['nombre'],"Fundamentos de programación")
+	end
+
 	def test_get_from_id
 		expected = {"nombre"=>"Fundamentos de programación", "Grupo"=>"B", "teoria"=>"J-9:30", "practicas"=>["M-11:30", "J-11:30", "V-11:30"]}
 		recovered = @manager.getAsignatura("1100")
