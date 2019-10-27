@@ -6,4 +6,7 @@ source "https://rubygems.org"
 
 gem "rake"
 gem "test-unit"
+gem "rack"
+gem "rack-test"
+gem "sinatra"
 gem "json"
