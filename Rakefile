@@ -1,9 +1,7 @@
 require 'rake/testtask'
 
-task default: "test"
-
 Rake::TestTask.new do |task|
-	#Nombre por defecto es test
+	task.name = "test"
 	task.description = "Ejecución de todos los tests"
 	task.test_files = FileList["t/*test.rb"]
 end
