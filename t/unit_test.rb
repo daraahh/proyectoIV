@@ -1,5 +1,5 @@
 
-require 'test-unit'
+require 'test/unit'
 require 'json'
 require_relative '../src/SchedManager.rb'
 
