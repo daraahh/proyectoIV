@@ -11,3 +11,6 @@ jobs:
             - run:
                 name: Tests
                 command: rake test
+            - run:
+                name: Arrancar el servicio
+                command: rake start

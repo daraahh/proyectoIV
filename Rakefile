@@ -20,7 +20,7 @@ end
 
 desc "Arranca la aplicación"
 task :start do
-	exec "rackup -D -s thin -p 9292 config.ru"
+	exec "rackup -x -D -s thin -p 9292 config.ru"
 end
 
 desc "Para la aplicación"
