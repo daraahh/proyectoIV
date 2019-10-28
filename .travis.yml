@@ -1,4 +1,5 @@
 language: ruby
 rvm:
     - 2.6.4
-script: rake unit_tests
+install: bundle install
+script: rake test
