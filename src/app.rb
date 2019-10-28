@@ -53,4 +53,9 @@ class App < Sinatra::Base
 		{:status => 'OK'}.to_json
 	end
 
+	error 404 do
+		content_type :json
+		{:status => 'Error: ruta no encontrada'}.to_json
+	end
+
 end
