@@ -38,7 +38,7 @@ class AppFuncTest < Test::Unit::TestCase
 		assert_equal(last_response.content_type, 'application/json')
 		assert_equal(last_response.body, '{"nombre":"Fundamentos de programación","Grupo":"B","teoria":"J-9:30","practicas":["M-11:30","J-11:30","V-11:30"]}', "asignatura indicada encontrada")
 		get '/asignaturas/9999'
-		assert last_response.not_found?
+		assert last_response.bad_request?
 		assert_equal(last_response.content_type, 'application/json')
 		assert_equal(last_response.body, '{"status":"Error: Asignatura no encontrada."}', "Asignatura inexistente no encontrada")
 	end
@@ -66,7 +66,7 @@ class AppFuncTest < Test::Unit::TestCase
 		assert_equal(last_response.content_type, 'application/json')
 		assert_equal(last_response.body, '{"status":"OK"}')
 		get '/asignaturas/' + id_to_remove.to_s
-		assert last_response.not_found?
+		assert last_response.bad_request?
 		assert_equal(last_response.content_type, 'application/json')
 		assert_equal(last_response.body, '{"status":"Error: Asignatura no encontrada."}', 'elemento ha sido eliminado')
 	end

@@ -22,7 +22,7 @@ class App < Sinatra::Base
 		content_type :json
 		resultado = @manager.getAsignatura(id)
 		if resultado == nil
-			status 404
+			status 400
 			{:status => 'Error: Asignatura no encontrada.'}.to_json
 		else
 			resultado.to_json
@@ -33,7 +33,7 @@ class App < Sinatra::Base
 		content_type :json
 		resultado = @manager.getTodasAsignaturas
 		if resultado == nil
-			status 404
+			status 400
 			{:status => 'Error: Asignaturas no encontradas'}.to_json
 		else
 			resultado.to_json
