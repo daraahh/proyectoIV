@@ -5,8 +5,9 @@
 - [Descripción general](#descripción-general)
 - [Motivacion](#motivación)
 - [Implementación](#implementación)
-- [Herramientas de construcción y prueba](#herramientas-de-construcción-y-prueba)
+- [Herramientas de construcción, prueba, arranque y parada](#herramientas-de-construcción-prueba-arranque-y-parada)
 - [Integración continua](#integración-continua)
+- [API-REST](#api-rest)
 
 _________
 
@@ -32,7 +33,7 @@ Como base de datos se usará [CouchDB](http://couchdb.apache.org/), principalmen
 Como sistema de log se usará [Logstash](https://www.elastic.co/products/logstash).
 - Haciendo uso de [LogStashLogger](https://github.com/dwbutler/logstash-logger), que extiende la clase `Logger` de Ruby para dar soporte a Logstash.
 
-## Herramientas de construcción y prueba
+## Herramientas de construcción, prueba, arranque y parada
 
 ### Prerrequisitos
 
@@ -60,11 +61,48 @@ Para ejecutar los tests, nos situamos en el directorio raíz del repositorio y e
 
 `rake`
 
+### Arranque y parada del servicio
+
+Para llevar a cabo estas tareas hago uso de `Rack`, que nos permite levantar el servicio de forma sencilla con la configuración indicada en el fichero [config.ru](https://github.com/daraahh/proyectoIV/blob/master/config.ru). De esta forma, solo tendremos que usar `rackup` para levantar un servidor [thin](https://github.com/macournoyer/thin) (aunque *rackup* permite otros servidores he elegido este porque es simple y ligero) y poner en funcionamiento el servicio.
+
+He definido dos tareas nuevas en el archivo [Rakefile](https://github.com/daraahh/proyectoIV/blob/master/Rakefile) para arrancar y parar el servicio de forma sencilla:
+
+```ruby
+desc "Arranca la aplicación"
+task :start do
+	exec "rackup -D -s thin -p 9292 config.ru"
+end
+
+desc "Para la aplicación"
+task :stop do
+	exec "kill $(lsof -i :9292 -t)"
+end
+```
+
+Para arrancar la aplicación, ejecuta `rackup` demonizando el proceso con `-D`, indica el servidor de tipo `thin` e indica el puerto de escucha seguido del fichero de configuración que indica la aplicación a ejecutar.
+
+El uso es sencillo y es el siguiente:
+
+Arranca el servicio de forma local, ejecución en segundo plano y escuchando en el puerto 9292:
+
+`rake start`
+
+Para detener el servicio:
+
+`rake stop`
+
 ##### ¿Qué se testea actualmente?
-- Clase SchedManager, gestora de las operaciones de recuperación, adición y eliminación de información que se realizan sobre el fondo de datos, actualmente un archivo json con datos de prueba.
+- Clase SchedManager, gestora de las operaciones de recuperación, adición y eliminación de información que se realizan sobre el fondo de datos, actualmente un archivo json con datos de prueba. [Tests unitarios](https://github.com/daraahh/proyectoIV/blob/master/t/unit_test.rb)
 	- Que se recupere un elemento localizable por un identificador.
 	- Que se añada un elemento de forma adecuada al conjunto de datos.
 	- Que se elimine un elemento de forma adecuada del conjunto de datos.
+
+- Clase App, aplicación Sinatra, una API REST que recoge las funcionalidades del servicio y atiende las peticiones. [Tests funcionales](https://github.com/daraahh/proyectoIV/blob/master/t/functional_test.rb)
+	- Que se devuelve un estado correcto como respuesta, ya sea de tipo 200 o 400.
+	- Que la respuesta es de tipo JSON.
+	- Que los datos recuperados son los adecuados.
+	- Que se añade una asignatura de forma adecuada.
+	- Que se elimina una asignatura de forma correcta.
 
 ## Integración continua
 
@@ -76,12 +114,13 @@ TravisCI permite una configuración rápida y sencilla para la automatización d
 
 El archivo de configuración en uso es el mostrado abajo. Se especifica el lenguaje en uso y la versión del mismo, en mi caso 2.6.4.
 
-Por defecto, en el caso de Ruby, Travis ejecutará ls comandos `bundle install` para instalar las dependencias y `rake` para lanzar lo que tengamos configurado, en mi caso los tests. De este modo, no hace falta indicarlos en el fichero de configuración:
+Por defecto, en el caso de Ruby, Travis ejecutará ls comandos `bundle install` para instalar las dependencias y `rake unit_tests` para lanzar los tests unitarios:
 
 ```yml
 language: ruby
 rvm:
     - 2.6.4
+script: rake unit_tests
 ```
 
 
@@ -110,5 +149,24 @@ jobs:
       - run:
     #Ejecutar los tests
         name: Tests
-        command: rake
+        command: rake test
 ```
+
+## API REST
+
+Actualmente, la api dispone de las siguientes rutas:
+
+- GET
+	- `/` y `/status` : Devuelven un estado 200 y `{ "status": "OK" }`
+	- `/asignaturas` : Devuelve todas las asignaturas que residen en el fondo de datos.
+	- `/asignaturas/<id>` : Devuelve la asignatura identificada por el valor `id`
+- PUT
+	- `/asignaturas` : Añade la asignatura que acompaña a la petición en formato JSON al pull de datos.
+- DELETE
+	- `/asignaturas` : Elimina la asignatura identificada por el valor `id`
+
+El atributo `id` cobrará más importancia en un futuro con nuevas funcionalidades. Este parámetro es una numérica compuesta por cuatro dígitos que permitirá identificar a que curso y cuatrimestre pertenece dicha asignatura.
+
+Ejemplo: "1104", asignatura del primer curso, primer cuatrimestre, identificada con un 4. "1203", asignatura del primer curso, segundo cuatrimestre, identificada con un 3. "3205", asignatura del tercer curso, segundo cuatrimestre, identificada con un 5...
+
+Esto permitirá al servicio organizar de una mejor manera las asginaturas (por cursos y cuatrimestres) y poder recuperar la información de una forma más sencilla.
