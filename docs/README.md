@@ -81,6 +81,8 @@ end
 
 Para arrancar la aplicación, ejecuta `rackup` demonizando el proceso con `-D`, indica el servidor de tipo `thin` e indica el puerto de escucha seguido del fichero de configuración que indica la aplicación a ejecutar.
 
+Para para la apliación, localizamos con `lsof` el PID del proceso que está escuchando en el puerto 9292, nuestro servidor, y matamos dicho proceso con `kill`.
+
 El uso es sencillo y es el siguiente:
 
 Arranca el servicio de forma local, ejecución en segundo plano y escuchando en el puerto 9292:
