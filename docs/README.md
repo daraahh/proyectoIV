@@ -59,7 +59,7 @@ La gran ventaja que encuentro en el uso de `rake` y `Rakefile` es que al tratars
 
 Para ejecutar los tests, nos situamos en el directorio raíz del repositorio y ejecutamos:
 
-`rake`
+`rake test`
 
 ### Arranque y parada del servicio
 
@@ -116,13 +116,14 @@ TravisCI permite una configuración rápida y sencilla para la automatización d
 
 El archivo de configuración en uso es el mostrado abajo. Se especifica el lenguaje en uso y la versión del mismo, en mi caso 2.6.4.
 
-Por defecto, en el caso de Ruby, Travis ejecutará ls comandos `bundle install` para instalar las dependencias y `rake unit_tests` para lanzar los tests unitarios:
+Por defecto, en el caso de Ruby, Travis ejecutará los comandos `bundle install` para instalar las dependencias y `rake test` para lanzar los tests unitarios:
 
 ```yml
 language: ruby
 rvm:
     - 2.6.4
-script: rake unit_tests
+install: bundle install
+script: rake test
 ```
 
 
@@ -149,14 +150,18 @@ jobs:
         name: Dependencias
         command: bundle install
       - run:
-    #Ejecutar los tests
+    # Ejecutar los tests
         name: Tests
         command: rake test
+      - run:
+    # Poder en funcionamiento el servicio
+        name: Arrancar el servicio
+        command: rake start		
 ```
 
 ## API REST
 
-Actualmente, la api dispone de las siguientes rutas:
+Actualmente, la API dispone de las siguientes rutas:
 
 - GET
 	- `/` y `/status` : Devuelven un estado 200 y `{ "status": "OK" }`
@@ -165,7 +170,7 @@ Actualmente, la api dispone de las siguientes rutas:
 - PUT
 	- `/asignaturas` : Añade la asignatura que acompaña a la petición en formato JSON al pull de datos.
 - DELETE
-	- `/asignaturas` : Elimina la asignatura identificada por el valor `id`
+	- `/asignaturas/<id>` : Elimina la asignatura identificada por el valor `id`
 
 El atributo `id` cobrará más importancia en un futuro con nuevas funcionalidades. Este parámetro es una numérica compuesta por cuatro dígitos que permitirá identificar a que curso y cuatrimestre pertenece dicha asignatura.
 
