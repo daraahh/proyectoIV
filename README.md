@@ -26,7 +26,7 @@ Actualmente, la api dispone de las siguientes rutas:
 - PUT
 	- `/asignaturas` : Añade la asignatura que acompaña a la petición en formato JSON al pull de datos.
 - DELETE
-	- `/asignaturas` : Elimina la asignatura identificada por el valor `id`
+	- `/asignaturas/<id>` : Elimina la asignatura identificada por el valor `id`
 
 La documentación adicional sobre [API REST](https://daraahh.github.io/proyectoIV/#api-rest) se encuentra en el GitHub Pages del repositorio.
 
@@ -69,7 +69,7 @@ La documentación adicional sobre [herramientas de instalación y prueba](https:
 	buildtool: Rakefile
 
 
-### Despliegue
+## Despliegue
 
 Próximamente, despliegue en Heroku...
 
