@@ -32,13 +32,15 @@ La documentación adicional sobre [API REST](https://daraahh.github.io/proyectoI
 
 ## Instrucciones de instalación y prueba
 
-Descarga el repositorio mediante `git clone`.
+Descarga el repositorio mediante `git clone`:
+
+`git clone https://github.com/daraahh/proyectoIV.git`
 
 ### Instalar dependencias
 
 Instala las dependencias indicadas en el [Gemfile](https://github.com/daraahh/proyectoIV/blob/master/Gemfile).
 
-`bundle install`
+`rake install`
 
 ### Ejecuta los tests
 

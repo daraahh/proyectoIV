@@ -45,9 +45,16 @@ Aunque para instalar las dependencias no será necesario ya que la versión del 
 
 ### Instalación de dependencias
 
-Necesitamos instalar las gemas de las que depende el proyecto para garantizar su correcto funcionamiento. Para ello, usamos la herramienta **bundle**:
+Necesitamos instalar las gemas de las que depende el proyecto para garantizar su correcto funcionamiento. Para ello, usamos la herramienta de construcción `rake`, desde la que se ejecutará **bundle**:
 
-`bundle install`
+`rake install`
+
+```ruby
+desc "Instalar las dependencias necesarias"
+task :install do
+	exec "bundle install"
+end
+```
 
 Esto instalará de forma automática las gemas indicadas en el fichero [Gemfile](https://github.com/daraahh/proyectoIV/blob/master/Gemfile) en el directorio raíz del repositorio.
 
@@ -60,6 +67,12 @@ La gran ventaja que encuentro en el uso de `rake` y `Rakefile` es que al tratars
 Para ejecutar los tests, nos situamos en el directorio raíz del repositorio y ejecutamos:
 
 `rake test`
+
+Si quisieramos ejecutar sólo los tests unitarios o sólo los tests funcionales, podemos usar comandos independientes:
+
+`rake unit_tests`
+
+`rake functional_tests`
 
 ### Arranque y parada del servicio
 
@@ -156,7 +169,7 @@ jobs:
       - run:
     # Poder en funcionamiento el servicio
         name: Arrancar el servicio
-        command: rake start		
+        command: rake start
 ```
 
 ## API REST
