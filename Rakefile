@@ -1,5 +1,7 @@
 require 'rake/testtask'
 
+task :default => ["install"]
+
 Rake::TestTask.new do |task|
 	task.name = "test"
 	task.description = "Ejecución de todos los tests"
@@ -16,6 +18,11 @@ Rake::TestTask.new do |task|
 	task.name = "functional_tests"
 	task.description = "Ejecución de tests funcionales"
 	task.test_files = FileList["t/functional_test.rb"]
+end
+
+desc "Instalar las dependencias necesarias"
+task :install do
+	exec "bundle install"
 end
 
 desc "Arranca la aplicación"
