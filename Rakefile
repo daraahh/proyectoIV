@@ -27,10 +27,15 @@ end
 
 desc "Arranca la aplicación"
 task :start do
-	exec "rackup -D -s thin -p 9292 config.ru"
+  exec "pm2 start sinatra_app.json"
 end
 
 desc "Para la aplicación"
 task :stop do
-	exec "kill $(lsof -i :9292 -t)"
+  exec "pm2 stop sinatra-app-IV"
+end
+
+desc "Elimina el proceso"
+task :delete do
+  exec "pm2 delete sinatra-app-IV"
 end
