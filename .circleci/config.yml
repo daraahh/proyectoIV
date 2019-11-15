@@ -6,7 +6,9 @@ jobs:
         steps:
             - run:
                 name: Instalar pm2
-                command: wget -qO- https://getpm2.com/install.sh | bash
+                command: |
+                    sudo apt install -y npm
+                    sudo npm install -g pm2
             - checkout
             - run:
                 name: Dependencias
