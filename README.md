@@ -71,9 +71,9 @@ La documentación adicional sobre [herramientas de instalación y prueba](https:
 	buildtool: Rakefile
 
 
-## Despliegue
+## Despliegue en Azure
 
-Próximamente, despliegue en Heroku...
+	Despliegue: https://proyecto-iv.azurewebsites.net/
 
 
 ## Documentación adicional
@@ -82,3 +82,4 @@ Próximamente, despliegue en Heroku...
 	- [Herramientas de construcción, prueba, arranque y parada](https://daraahh.github.io/proyectoIV/#herramientas-de-construcción-prueba-arranque-y-parada)
 	- [Integración continua](https://daraahh.github.io/proyectoIV/#integración-continua)
 	- [API REST](https://daraahh.github.io/proyectoIV/#api-rest)
+	- [Despligue PaaS](https://daraahh.github.io/proyectoIV/#despliegue-paas)
