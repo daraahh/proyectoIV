@@ -10,12 +10,12 @@ class App < Sinatra::Base
 
 	get '/' do
 		content_type :json
-		{:status => 'OK'}.to_json
+		{:status => 'OK',:ejemplo =>{:ruta => '/asignaturas/1100',:valor =>{:nombre => 'Fundamentos de programación', :Grupo => 'B', :teoria => 'J-9:30', :practicas => ['M-11:30','J-11:30','V-11:30']}}}.to_json
 	end
 
 	get '/status' do
 		content_type :json
-		{:status => 'OK'}.to_json
+		{:status => 'OK',:ejemplo =>{:ruta => '/asignaturas/1100',:valor =>{:nombre => 'Fundamentos de programación', :Grupo => 'B', :teoria => 'J-9:30', :practicas => ['M-11:30','J-11:30','V-11:30']}}}.to_json
 	end
 
 	get '/asignaturas/:id' do |id|
