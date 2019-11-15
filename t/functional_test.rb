@@ -22,14 +22,14 @@ class AppFuncTest < Test::Unit::TestCase
 		get '/'
 		assert last_response.ok?
 		assert_equal(last_response.content_type, 'application/json')
-		assert_equal(last_response.body, '{"status":"OK"}', "status ok")
+		assert_equal(last_response.body, '{"status":"OK","ejemplo":{"ruta":"/asignaturas/1100","valor":{"nombre":"Fundamentos de programación","Grupo":"B","teoria":"J-9:30","practicas":["M-11:30","J-11:30","V-11:30"]}}}', "status ok")
 	end
 
 	def test_status_ok
 		get '/status'
 		assert last_response.ok?
 		assert_equal(last_response.content_type, 'application/json')
-		assert_equal(last_response.body, '{"status":"OK"}', "status ok")
+		assert_equal(last_response.body, '{"status":"OK","ejemplo":{"ruta":"/asignaturas/1100","valor":{"nombre":"Fundamentos de programación","Grupo":"B","teoria":"J-9:30","practicas":["M-11:30","J-11:30","V-11:30"]}}}', "status ok")
 	end
 
 	def test_get_asignatura_id
