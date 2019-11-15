@@ -1,0 +1,12 @@
+{
+	"apps": [
+		{
+			"name": "sinatra-app-IV",
+			"env": {
+				"PORT": 8080
+			},
+			"script": "rackup -s thin -p $PORT config.ru",
+			"exec_mode": "fork_mode"
+		}
+		]
+}
