@@ -4,6 +4,9 @@ jobs:
         docker:
             - image: circleci/ruby:2.6.4
         steps:
+            - run:
+                name: Instalar pm2
+                command: wget -qO- https://getpm2.com/install.sh | bash
             - checkout
             - run:
                 name: Dependencias
