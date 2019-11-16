@@ -8,6 +8,8 @@
 - [Herramientas de construcción, prueba, arranque y parada](#herramientas-de-construcción-prueba-arranque-y-parada)
 - [Integración continua](#integración-continua)
 - [API-REST](#api-rest)
+- [Despliegue PaaS](#despliegue-paas)
+- [DockerHub](#dockerhub)
 
 _________
 
@@ -78,23 +80,42 @@ Si quisieramos ejecutar sólo los tests unitarios o sólo los tests funcionales,
 
 Para llevar a cabo estas tareas hago uso de `Rack`, que nos permite levantar el servicio de forma sencilla con la configuración indicada en el fichero [config.ru](https://github.com/daraahh/proyectoIV/blob/master/config.ru). De esta forma, solo tendremos que usar `rackup` para levantar un servidor [thin](https://github.com/macournoyer/thin) (aunque *rackup* permite otros servidores he elegido este porque es simple y ligero) y poner en funcionamiento el servicio.
 
-He definido dos tareas nuevas en el archivo [Rakefile](https://github.com/daraahh/proyectoIV/blob/master/Rakefile) para arrancar y parar el servicio de forma sencilla:
+He definido dos tareas nuevas en el archivo [Rakefile](https://github.com/daraahh/proyectoIV/blob/master/Rakefile) para arrancar y parar el servicio de forma sencilla. Actualmente, hago uso del gestor de procesos `pm2` que me permitirá gestionar y guardar los PID de los procesos que se arrancan.
+
+Tras probar numerosos gestores de procesos para Ruby, como `Invoker`, `Procman`, `Procodile`, `Foreman`... He decidido usar `pm2` porque *funciona* y se ajusta de una forma más cómoda a lo que buscaba. Además, la última versión estable es relativamente reciente y no de hace 5 años, a parte de que funciona con la versión de Ruby en la que estoy desarrollando el proyecto.
 
 ```ruby
 desc "Arranca la aplicación"
 task :start do
-	exec "rackup -D -s thin -p 9292 config.ru"
+  exec "pm2 start sinatra_app.json"
 end
 
 desc "Para la aplicación"
 task :stop do
-	exec "kill $(lsof -i :9292 -t)"
+  exec "pm2 stop sinatra-app-IV"
 end
 ```
+Fichero sinatra_app.json:
 
-Para arrancar la aplicación, ejecuta `rackup` demonizando el proceso con `-D`, indica el servidor de tipo `thin` e indica el puerto de escucha seguido del fichero de configuración que indica la aplicación a ejecutar.
+```json
+{
+	"apps": [
+		{
+			"name": "sinatra-app-IV",
+			"env": {
+				"PORT": 8080
+			},
+			"script": "rackup -s thin -p $PORT config.ru",
+			"exec_mode": "fork_mode"
+		}
+		]
+}
+```
 
-Para para la apliación, localizamos con `lsof` el PID del proceso que está escuchando en el puerto 9292, nuestro servidor, y matamos dicho proceso con `kill`.
+
+Para arrancar la aplicación, ejecuta `rackup`, indica el servidor de tipo `thin` e indica el puerto de escucha mediante una variable de entorno `PORT`, seguido del fichero de configuración que indica la aplicación a ejecutar.
+
+Para para la aplicación, indicamos a `pm2` que pare el proceso identificándolo mediante el nombre que proporcionamos al arrancarlo `sinatra-app-IV`.
 
 El uso es sencillo y es el siguiente:
 
@@ -139,12 +160,13 @@ install: bundle install
 script: rake test
 ```
 
-
 ### CircleCI
 
 La configuración de Circle no es tan inmediata pero es bastante intuitiva y de fácil lectura debido a que sigue un formato `YAML`.
 
 Una de las ventajas que le encuentro frente a Travis es que Circle tiene un sistema de cache para los requerimientos de instalación por lo que las builds son más rápidas.
+
+Incluyo node en la imagen predefinida ya que necesito instalar `npm` para posteriormente instalar `pm2`. El autoinstalador en la documentación de `pm2` que descarga pm2 sin que sea necesario `npm`, no me ha funcionado en la build de CircleCI y por ello he tenido que optar por instalar todo, aunque el 85% no lo necesito.
 
 ```yaml
 version: 2
@@ -152,24 +174,30 @@ jobs:
   build:
     docker:
     #Definimos el lenguaje y la versión. El OS por defecto es Ubuntu.
-      - image: circleci/ruby:2.6.4
+      - image: circleci/ruby:2.6.4-node
     # Lista de los pasos que se van a llevar a cabo en el job
     steps:
+      - run:
+    # Instalar pm2 para arrancar la aplicación más adelante
+          name: Instalar pm2
+          command: |
+            sudo apt install -y npm
+            sudo npm install -g pm2
     # Clona nuestro repositorio
       - checkout
     # Indicamos los comandos a ejecutar
       - run:
     # Instalar las dependencias
-        name: Dependencias
-        command: bundle install
+          name: Dependencias
+          command: bundle install
       - run:
     # Ejecutar los tests
-        name: Tests
-        command: rake test
+          name: Tests
+          command: rake test
       - run:
     # Poder en funcionamiento el servicio
-        name: Arrancar el servicio
-        command: rake start
+          name: Arrancar el servicio
+          command: rake start
 ```
 
 ## API REST
@@ -190,3 +218,65 @@ El atributo `id` cobrará más importancia en un futuro con nuevas funcionalidad
 Ejemplo: "1104", asignatura del primer curso, primer cuatrimestre, identificada con un 4. "1203", asignatura del primer curso, segundo cuatrimestre, identificada con un 3. "3205", asignatura del tercer curso, segundo cuatrimestre, identificada con un 5...
 
 Esto permitirá al servicio organizar de una mejor manera las asginaturas (por cursos y cuatrimestres) y poder recuperar la información de una forma más sencilla.
+
+## Despliegue PaaS
+
+Como *PaaS* he elegido Azure, el despliegue de la aplicación, después de una primera aproximación, ha sido relativamente sencillo. A continuación explicaré a lo que me refiero con esto:
+
+### Primer aproximación: Web APP sin contenedor
+
+En una primera maniobra para desplegar la aplicación intenté crear el servicio directamente con el stack de desarrollo que proporciona Azure, pensado para el despliegue de aplicaciones *Ruby on Rails*.
+
+Aunque en la documentación, Azure advierte de que sólo hay soporte para este tipo de aplicaciones decidí ignorar dicha advertencia e intentar colar mi aplicación Sinatra. Esto propició que me encontrara con diversos problemas:
+
+- La versión de Ruby más reciente que proporcionan es `2.6.2`, un detalle que desencadenaba numerosos errores en el arranque de mi aplicación, desarrollada con la versión `2.6.4`.
+
+- No es posible (no he encontrado la forma) ejecutar la aplicación Sinatra ya que Azure ejecuta por defecto la orden para arrancar una aplicación de tipo Ruby on Rails.
+
+### Segunda aproximación: Web APP en un contenedor Docker
+
+Después de trastear un poco más e intentar que se desplegara la aplicación, decidí crear un contenedor para crear un entorno aislado que contuviese todo lo necesario y que no me creara problemas a la hora del despliegue. Esto es posible porque Azure permite desplegar desde un contenedor Docker por lo que quedaban solucionados todos los problemas descritos en la primera aproximación.
+
+Debido a que el uso de Docker está relacionado con el siguiente hito, no tenía claro si debía usarlo para hacer el despliegue en el PaaS, pero dadas las circunstancias, era la opción más clara. Dicho esto, estoy bastante contento con el resultado, ya que he automatizado la construcción del contenedor y su posterior e inmediato despliegue.
+
+#### Proceso creación de aplicación a partir de contenedor Docker.
+
+Desde la web de Azure, podemos clickar en añadir recurso y elegir *Web App*. Después nos aparecerá un formulario como el siguiente.
+
+Como en mi caso voy a desplegar desde un contenedor la configuración sería como la indicada en la captura. Básicamente hay que marcar *Docker container* y rellenar los campos que nos pide sobre el nombre de la aplicación, el grupo de recursos y otros datos.
+
+![Docker 1](img/docker.png)
+
+Habiendo hecho click en *Next: Docker*, nos aparecerá la siguiente pantalla en la que nos pedirá información sobre dónde tenemos alojada la imagen, en mi caso es un repositorio público de DockerHub. El contenedor está identificado por *darahh/proyectoiv*.
+
+![Docker 2](img/docker2.png)
+
+Hecho esto, Azure empezará a crear la aplicación, descargará la imagen del repositorio en DockerHub y tendremos listo nuestro servicio.
+
+Estos pasos son reproducibles desde CLI de la siguiente forma:
+
+`az webapp create -n proyecto-iv -g IV -p F1 -i darahh/proyectoiv`
+
+También habrá que activar el despliegue continuo para poder desplegar directamente desde DockerHub:
+
+`az webapp deployment container config -n proyecto-iv -g IV -e true`
+
+Nos devolverá la url del webhook que habrá que guardar para indicárselo a DockerHub más tarde.
+
+Esto se puede activar desde la web en el apartado *Container settings*.
+
+## DockerHub
+
+Para integrar los cambios del proyecto en Github directamente y que se vean reflejados de forma automática en el despliegue de Azure, he usado DockerHub.
+
+Primero he añadido un [Dockerfile](https://github.com/daraahh/proyectoIV/blob/master/Dockerfile) para la creación del contenedor y tras haber creado el repositorio en DockerHub, activo la automatización de builds de la siguiente forma:
+
+![DockerHub 1](img/dockerhub1.png)
+
+Es necesario enlazar nuestra cuenta de GitHub con la de DockerHub.
+
+Para terminar de configurar la cadena de eventos, configuro el webhook en DockerHub para que al crear una nueva build del contenedor se despliegue de forma automática en Azure.
+
+![DockerHub 2](img/dockerhub2-redacted.png)
+
+**tl;dr:** Cuando se haga push al repositorio en GitHub, se lanzarán los tests en CircleCI y TravisCI, además, se disparará una build en DockerHub que creará una imagen nueva con los últimos cambios. Cuando la build acabe, mediante el webhook, se avisará a Azure de la actualización y desplegará el contenedor nuevo.
