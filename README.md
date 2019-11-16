@@ -56,9 +56,9 @@ Arranca el servicio de forma local, ejecución en segundo plano y escuchando en 
 `rake start`
 
 ```
-$ curl http://localhost:9292
+$ curl http://localhost:8080
 {"status":"OK", ... }
-$ curl http://localhost:9292/status
+$ curl http://localhost:8080/status
 {"status":"OK", ... }
 ```
 
