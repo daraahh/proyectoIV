@@ -57,9 +57,9 @@ Arranca el servicio de forma local, ejecución en segundo plano y escuchando en 
 
 ```
 $ curl http://localhost:9292
-{"status":"OK"}
+{"status":"OK", ... }
 $ curl http://localhost:9292/status
-{"status":"OK"}
+{"status":"OK", ... }
 ```
 
 Para detener el servicio:
@@ -71,10 +71,21 @@ La documentación adicional sobre [herramientas de instalación y prueba](https:
 	buildtool: Rakefile
 
 
-## Despliegue en Azure
+## Despliegue PaaS
+
+### Azure
 
 	Despliegue: https://proyecto-iv.azurewebsites.net/
 
+La documentación adicional sobre [el despliegue en PaaS](https://daraahh.github.io/proyectoIV/#despliegue-paas) se encuentra en el GitHub Pages del repositorio.
+
+## DockerHub
+
+Contenedor de la aplicación en DockerHub: https://hub.docker.com/r/darahh/proyectoiv
+
+Para probar el contenedor en local: `docker run --rm -p 8080:80 darahh/proyectoiv:latest`
+
+La documentación adicional sobre [la dockerización de la aplicación](https://daraahh.github.io/proyectoIV/#dockerhub) se encuentra en el GitHub Pages del repositorio.
 
 ## Documentación adicional
 - [Página principal](https://daraahh.github.io/proyectoIV/)
@@ -83,3 +94,4 @@ La documentación adicional sobre [herramientas de instalación y prueba](https:
 	- [Integración continua](https://daraahh.github.io/proyectoIV/#integración-continua)
 	- [API REST](https://daraahh.github.io/proyectoIV/#api-rest)
 	- [Despligue PaaS](https://daraahh.github.io/proyectoIV/#despliegue-paas)
+	- [DockerHub](https://daraahh.github.io/proyectoIV/#dockerhub)
