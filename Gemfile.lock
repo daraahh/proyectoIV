@@ -1,7 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    json (2.2.0)
     mustermann (1.0.3)
     power_assert (1.1.5)
     rack (2.0.7)
@@ -22,7 +21,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  json
   rack
   rack-test
   sinatra
