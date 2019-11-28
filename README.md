@@ -79,11 +79,23 @@ La documentación adicional sobre [herramientas de instalación y prueba](https:
 
 La documentación adicional sobre [el despliegue en PaaS](https://daraahh.github.io/proyectoIV/#despliegue-paas) se encuentra en el GitHub Pages del repositorio.
 
-## DockerHub
+## Despliegue del contenedor
 
-Contenedor de la aplicación en DockerHub: https://hub.docker.com/r/darahh/proyectoiv
+	Contenedor: https://iv-proyecto.herokuapp.com/
 
-Para probar el contenedor en local: `docker run --rm -p 8080:80 darahh/proyectoiv:latest`
+	Contenedor: https://proyecto-iv.azurewebsites.net/
+
+La documentación adicional sobre [el despliegue del contenedor](https://daraahh.github.io/proyectoIV/#despliegue-contenedor) se encuentra en el GitHub Pages del repositorio.
+
+### DockerHub
+
+	URL: https://hub.docker.com/r/darahh/proyectoiv
+
+Para probar el contenedor en local:
+
+`docker pull darahh/proyectoiv`
+
+`docker run --rm -p 8080:80 proyectoiv`
 
 La documentación adicional sobre [la dockerización de la aplicación](https://daraahh.github.io/proyectoIV/#dockerhub) se encuentra en el GitHub Pages del repositorio.
 
@@ -93,5 +105,6 @@ La documentación adicional sobre [la dockerización de la aplicación](https://
 	- [Herramientas de construcción, prueba, arranque y parada](https://daraahh.github.io/proyectoIV/#herramientas-de-construcción-prueba-arranque-y-parada)
 	- [Integración continua](https://daraahh.github.io/proyectoIV/#integración-continua)
 	- [API REST](https://daraahh.github.io/proyectoIV/#api-rest)
-	- [Despligue PaaS](https://daraahh.github.io/proyectoIV/#despliegue-paas)
+	- [Despliegue PaaS](https://daraahh.github.io/proyectoIV/#despliegue-paas)
 	- [DockerHub](https://daraahh.github.io/proyectoIV/#dockerhub)
+	- [Despliegue del contenedor](https://daraahh.github.io/proyectoIV/#despliegue-contenedor)
