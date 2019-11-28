@@ -233,7 +233,7 @@ Aunque en la documentación, Azure advierte de que sólo hay soporte para este t
 
 - No es posible (no he encontrado la forma) ejecutar la aplicación Sinatra ya que Azure ejecuta por defecto la orden para arrancar una aplicación de tipo Ruby on Rails.
 
-### Segunda aproximación: Web APP en un contenedor Docker
+#### Segunda aproximación: Web APP en un contenedor Docker
 
 Después de trastear un poco más e intentar que se desplegara la aplicación, decidí crear un contenedor para crear un entorno aislado que contuviese todo lo necesario y que no me creara problemas a la hora del despliegue. Esto es posible porque Azure permite desplegar desde un contenedor Docker por lo que quedaban solucionados todos los problemas descritos en la primera aproximación.
 
@@ -279,4 +279,87 @@ Para terminar de configurar la cadena de eventos, configuro el webhook en Docker
 
 ![DockerHub 2](img/dockerhub2-redacted.png)
 
-**tl;dr:** Cuando se haga push al repositorio en GitHub, se lanzarán los tests en CircleCI y TravisCI, además, se disparará una build en DockerHub que creará una imagen nueva con los últimos cambios. Cuando la build acabe, mediante el webhook, se avisará a Azure de la actualización y desplegará el contenedor nuevo.
+## Despliegue contenedor
+
+### Construcción del contenedor
+
+La construcción de la imagen se lleva a cabo con un `Dockerfile`, este archivo será el que tomarán las plataformas, en mi caso, `Heroku` y `Azure` a la hora de hacer el despliegue. A continuación, justificaré las elecciones que he tomado y las opciones que he considerado para crear la imagen de la aplicación.
+
+En primer lugar, opto por una imagen de Alpine Linux, versión 3.9, con Ruby preinstalado ya que estuve haciendo pruebas tomando Alpine sin Ruby e instalando el lenguaje posteriormente y el tamaño de la imagen era ligeramente superior. Además, me ha parecido que acelera la construcción.
+
+Tras tomar la imagen base, he definido dos variables de entorno para definir el directorio raíz de la aplicación y el puerto de escucha del servidor. Esto lo he hecho básicamente por comodidad, ya que son parámetros que se repiten en varios pasos del Dockerfile y si hay que hacer una modificación solo habría que cambiar el valor de la variable.
+
+En los siguientes pasos, se crear el directorio raíz y se copian únicamente los archivos necesarios para la ejecución de la aplicación. Posteriormente, se instalan las gemas necesarias y se ejecuta la aplicación con `rackup` escuchando en todas las interfaces en el puerto 80.
+
+Con está versión del Dockerfile, habiendo replanteado la construcción de la imagen, he podido minimizar el tamaño del contenedor, según indica DockerHub, de 350MB a 38.52MB.
+
+```
+# Toma una imagen de alpine con ruby como base para hacerlo lo más pequeño posible.
+FROM ruby:2.6.4-alpine3.9
+
+# Crea una variable de entorno que define el directorio raiz de la aplicacion
+ENV APP_HOME /app
+# Variable de entorno para determinar el puerto en el que va a escuchar el servidor
+ENV PORT 80
+
+# Crea el directorio raiz
+RUN mkdir $APP_HOME
+# Establece el directorio raiz como el directorio de trabajo
+WORKDIR $APP_HOME
+
+# Copiar solo archivos necesarios
+ADD src/ $APP_HOME/src
+ADD sampledata/ $APP_HOME/sampledata
+ADD config.ru $APP_HOME
+
+# Copia el Gemfile y el Gemfile.lock al contenedor e instalamos las dependencias
+ADD Gemfile* $APP_HOME/
+RUN bundle install
+
+# Indica el puerto en el que va a escuchar el contenedor
+EXPOSE $PORT
+
+# Arranca la aplicación en el puerto 80 escuchando en todas las interfaces
+CMD rackup --host 0.0.0.0 -p $PORT config.ru
+```
+
+Para construir el contenedor en local, habiendo clonado el repositorio, podemos hacer `docker build -t proyectoiv`.
+
+Y para probarlo, simplemente hacemos `docker -p 8080:80 proyectoiv`.
+
+### Despliegue en Dockerhub
+
+Esta parte queda explicada en la sección [DockerHub](#dockerhub) de esta página de documentación. En dicha sección se explica la creación del repositorio para la imagen, la automatización de actualizaciones desde un repositorio de GitHub y la configuración de un webhook para el despliegue en Azure. De esta forma cuando hagamos `git push` se actualizará el contenedor y se hará el despliegue automáticamente.
+
+## Despliegue en Heroku
+
+La creación de la aplicación en Heroku es bastante sencilla:
+
+	# Iniciamos sesión en Heroku desde el CLI
+	heroku login
+	# Creamos la aplicación con el nombre que queramos  
+	heroku create appiv
+
+Creamos el fichero `heroku.yml` que indicará a Heroku lo que debe hacer en el despliegue:
+
+```yml
+build:
+  docker:
+    web: Dockerfile
+```
+
+Indicamos la creación de un proceso `web` que es el que recibirá el tráfico HTTP y como no hemos especificado ninguna acción, tomará el comand CMD del Dockerfile.
+
+Una vez añadido el archivo, debemos cambiar la configuración de la aplicación para indicar que el despliegue se va a hacer con un contenedor. Simplemente, ejecutamos `heroku stack:set container`.
+
+Por último, configuramos la integración con Github para evitar hacer `git push heroku master` y que el despliegue se haga automáticamente al hacer `git push`.
+
+### Integración continua con Github
+
+Para activar la integración con Github y automatizar el despliegue de la aplicación tenemos que enlazar nuestra cuenta de Github en la sección `Deploy` del dashboard de Heroku. En el apartado `Automatic deploys` indicamos que haga el despliegue tras haber pasado los tests de CI.
+
+![Heroku](img/heroku.png)
+
+## Despliegue en Azure
+
+El despliegue del contenedor en Azure se documenta anteriormente en la sección [Despliegue PaaS](#despliegue-paas). Resumidamente, se justifica el uso de un contenedor en Azure, los pasos para la creación de la aplicación y la integración con DockerHub para el despliegue automático de la aplicación.
