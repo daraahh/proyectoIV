@@ -10,6 +10,7 @@
 - [API-REST](#api-rest)
 - [Despliegue PaaS](#despliegue-paas)
 - [DockerHub](#dockerhub)
+- [Despliegue contenedor](#despliegue-contenedor)
 
 _________
 
@@ -290,6 +291,8 @@ En primer lugar, opto por una imagen de Alpine Linux, versión 3.9, con Ruby pre
 Tras tomar la imagen base, he definido dos variables de entorno para definir el directorio raíz de la aplicación y el puerto de escucha del servidor. Esto lo he hecho básicamente por comodidad, ya que son parámetros que se repiten en varios pasos del Dockerfile y si hay que hacer una modificación solo habría que cambiar el valor de la variable.
 
 En los siguientes pasos, se crear el directorio raíz y se copian únicamente los archivos necesarios para la ejecución de la aplicación. Posteriormente, se instalan las gemas necesarias y se ejecuta la aplicación con `rackup` escuchando en todas las interfaces en el puerto 80.
+
+Uso la instrucción CMD, que establece el comando por defecto y que solo puede definirse una vez por Dockerfile, en *shell form* (CMD comando en vez de CMD ["comando"]) esto implica que, en realidad se ejecutará `/bin/sh -c <comando especificado en CMD>` por lo que nos permitirá usar las variables de entorno definidas, en este caso, `$PORT`.
 
 Con está versión del Dockerfile, habiendo replanteado la construcción de la imagen, he podido minimizar el tamaño del contenedor, según indica DockerHub, de 350MB a 38.52MB.
 
