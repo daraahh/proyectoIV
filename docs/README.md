@@ -355,7 +355,56 @@ Indicamos la creación de un proceso `web` que es el que recibirá el tráfico H
 
 Una vez añadido el archivo, debemos cambiar la configuración de la aplicación para indicar que el despliegue se va a hacer con un contenedor. Simplemente, ejecutamos `heroku stack:set container`.
 
-Por último, configuramos la integración con Github para evitar hacer `git push heroku master` y que el despliegue se haga automáticamente al hacer `git push`.
+Revisando los logs de la aplicación, me he dado cuenta de que heroku no estaba cogiendo el Dockerfile para crear la imagen asi que he tenido que optar por hacer el despliegue con otra alternativa que ofrece heroku, desde su registro de contenedores.
+
+Primero, he iniciado sesión en el registro con `heroku container:login`, despues he construido la imagen y hecho push al registro con `heroku container:push web` y después libero la imagen con `heroku container:release web`.
+
+Añado la salida producida de construir la imagen para que se vea que se usa el `Dockerfile` y no otra cosa.
+
+```
+darahh@debian:proyectoIV$ heroku container:push web
+=== Building web (IV/repos/proyectoIV/Dockerfile)
+Sending build context to Docker daemon  1.418MB
+Step 1/12 : FROM ruby:2.6.4-alpine3.9
+ ---> 1fbb4d7710eb
+Step 2/12 : ENV APP_HOME /app
+ ---> Using cache
+ ---> b1b4eaae2dd6
+Step 3/12 : ENV PORT 80
+ ---> Using cache
+ ---> 230d888c9e2b
+Step 4/12 : RUN mkdir $APP_HOME
+ ---> Using cache
+ ---> e8cb9fffe1ab
+Step 5/12 : WORKDIR $APP_HOME
+ ---> Using cache
+ ---> 6963760f8d3f
+Step 6/12 : ADD src/ $APP_HOME/src
+ ---> Using cache
+ ---> baf82f2795e8
+Step 7/12 : ADD sampledata/ $APP_HOME/sampledata
+ ---> Using cache
+ ---> 888798db01c8
+Step 8/12 : ADD config.ru $APP_HOME
+ ---> Using cache
+ ---> c2bcbbee0f55
+Step 9/12 : ADD Gemfile* $APP_HOME/
+ ---> Using cache
+ ---> c1904d89725a
+Step 10/12 : RUN bundle install
+ ---> Using cache
+ ---> f7576da454c8
+Step 11/12 : EXPOSE $PORT
+ ---> Using cache
+ ---> ede0d4f0eec4
+Step 12/12 : CMD rackup --host 0.0.0.0 -p $PORT config.ru
+ ---> Using cache
+ ---> 3b6994f4cdea
+Successfully built 3b6994f4cdea
+Successfully tagged registry.heroku.com/iv-proyecto/web:latest
+```
+
+Por último, configuramos la integración con Github desde el dashboard de Heroku para evitar hacer `git push heroku master` y que el despliegue se haga automáticamente al hacer `git push`.
 
 ### Integración continua con Github
 
