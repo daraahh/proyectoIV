@@ -27,15 +27,30 @@ end
 
 desc "Arranca la aplicación"
 task :start do
-  exec "pm2 start sinatra_app.json"
+    exec "pm2 start sinatra_app.json"
 end
 
 desc "Para la aplicación"
 task :stop do
-  exec "pm2 stop sinatra-app-IV"
+    exec "pm2 stop sinatra-app-IV"
 end
 
 desc "Elimina el proceso"
 task :delete do
-  exec "pm2 delete sinatra-app-IV"
+    exec "pm2 delete sinatra-app-IV"
+end
+
+desc "Crea y provisiona la máquina virtual"
+task :"create-provision-vm" do
+    exec "vagrant up --provision"
+end
+
+desc "Crea la máquina virtual"
+task :"create-vm" do
+    exec "vagrant up --no-provision"
+end
+
+desc "Provisiona la máquina virtual"
+task :"provision-vm" do
+    exec "vagrant provision"
 end
