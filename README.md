@@ -99,6 +99,14 @@ Para probar el contenedor en local:
 
 La documentación adicional sobre [la dockerización de la aplicación](https://daraahh.github.io/proyectoIV/#dockerhub) se encuentra en el GitHub Pages del repositorio.
 
+## Aprovisionamiento
+
+    provision: provision/playbook.yml
+
+Máquina virtual publicada en Vagrant Cloud: https://app.vagrantup.com/darahh/boxes/proyectoiv
+
+La documentación adicional sobre [la creación y aprovisionamiento de la máquina virtual](https://daraahh.github.io/proyectoIV/#aprovisionamiento) se encuentra en el GitHub Pages del repositorio.
+
 ## Documentación adicional
 - [Página principal](https://daraahh.github.io/proyectoIV/)
 	- [Implementación](https://daraahh.github.io/proyectoIV/#implementación)
@@ -108,3 +116,4 @@ La documentación adicional sobre [la dockerización de la aplicación](https://
 	- [Despliegue PaaS](https://daraahh.github.io/proyectoIV/#despliegue-paas)
 	- [DockerHub](https://daraahh.github.io/proyectoIV/#dockerhub)
 	- [Despliegue del contenedor](https://daraahh.github.io/proyectoIV/#despliegue-contenedor)
+	- [Creación y aprovisionamiento de MV](https://daraahh.github.io/proyectoIV/#creacion-y-aprovisionamiento-de-MV)
