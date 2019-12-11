@@ -1,4 +1,108 @@
-- hosts: proyectoIV
+-
+  hosts: proyectoIV
+  vars:
+  # Declaración de variables que determinan algunos aspectos de la creación y
+  # aprovisionamiento de la máquina
+    ruby_version: 2.6.4
+    username: dev
+    local_home: "{{ lookup('env','HOME') }}"
+    remote_home: /home/{{ username }}
   tasks:
-    - name: Prueba
-      ping: 
+  # Se crea un usuario con los privilegios justos y necesarios para desempeñar su
+  # tarea. Principalmente, para tener un usuario con menos privilegios que esté en
+  # contacto con el entorno de desarrollo, ya que el usuario vagrant es sudoer.
+    -
+      name: 'Crear usuario desarrollador'
+      become: true
+      user:
+        name: dev
+        shell: /bin/bash
+  # Añado la clave pública del host a las claves autorizadas del usuario desarrollador
+  # para poder iniciar sesión en la máquina mediante SSH
+    -
+      name: 'Añadir SSH key'
+      become: true
+      authorized_key:
+        user="{{ username }}"
+        key="{{ lookup('file', local_home+'/.ssh/id_rsa.pub') }}"
+        state=present
+  # Instalar mediante apt las dependencias del proyecto, principalmente node y npm
+  # para usar pm2 y rbenv para instalar el lenguaje
+    -
+      name: 'Instalar utilidades necesarias'
+      become: true
+      apt:
+        name:
+          - nodejs
+          - npm
+          - git
+          - libreadline-dev
+          - rbenv
+        update_cache: true
+  # Instalar pm2 ya que es lo que se uso como gestor de procesos
+  # Puede que lo sustituya en un futuro porque implica instalar nodejs y npm.
+  # Ambas cosas son bastantes innecesarias en un proyecto Ruby.
+    -
+      name: 'Instalar gestor de procesos pm2'
+      become: true
+      npm:
+        name: pm2
+        global: yes
+
+  # Clonar el proyecto en el home del usuario desarrollador
+    -
+      name: 'Clonar proyecto'
+      become: true
+      become_user: dev
+      git:
+        repo=https://github.com/daraahh/proyectoIV.git
+        dest="{{remote_home+'/proyecto'}}"
+
+  # Clonar el proyecto ruby-build para poder instalar versiones de Ruby fácilmente
+  # con rbenv posteriormente
+    -
+      name: 'Clonar ruby-build'
+      become: true
+      become_user: dev
+      git:
+        repo=https://github.com/rbenv/ruby-build.git
+        dest="{{remote_home+'/.rbenv/plugins/ruby-build'}}"
+
+  # Configuración del entorno para el funcionamiento de rbenv, según indican en
+  # su repositorio de Github
+  # Se hace uso de shell en vez de command para que funcione la redirección de salida
+    -
+      name: 'Configurar rbenv'
+      become: true
+      become_user: dev
+      shell: |
+        echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> {{remote_home}}/.bashrc
+        echo 'eval "$(rbenv init -)"' >> {{remote_home}}/.bashrc
+        echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> {{remote_home}}/.bashrc
+
+  # Instalar la versión de Ruby necesaria usando rbenv
+    -
+      name: 'Instalar ruby'
+      become: true
+      become_user: dev
+      command: rbenv install {{ ruby_version }}
+
+  # Establecer la versión de uso global recién instalada, compatible con el
+  # proyecto, de Ruby
+    -
+      name: 'Establecer ruby {{ ruby_version }} como global'
+      become: true
+      become_user: dev
+      command: rbenv global {{ ruby_version }}
+
+  # Instalar gemas necesarias para la construcción del proyecto
+    -
+      name: 'Instalar gema rake'
+      gem:
+        name: rake
+        version: 13.0.0
+    -
+      name: 'Instalar gema bundler'
+      gem:
+        name: bundler
+        version: 1.17.2
