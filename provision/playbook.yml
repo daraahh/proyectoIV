@@ -1,5 +1,5 @@
 -
-  hosts: proyectoIV
+  hosts: proyectoIV # Nombre de la máquina
   vars:
   # Declaración de variables que determinan algunos aspectos de la creación y
   # aprovisionamiento de la máquina
