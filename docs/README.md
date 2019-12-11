@@ -11,7 +11,7 @@
 - [Despliegue PaaS](#despliegue-paas)
 - [DockerHub](#dockerhub)
 - [Despliegue contenedor](#despliegue-contenedor)
-- [Creación y Aprovisionamiento de MV](#creación-y-aprovisionamiento-de-MV)
+- [Creación y Aprovisionamiento de MV](#creación-y-aprovisionamiento-de-mv)
 
 _________
 
@@ -235,7 +235,7 @@ Aunque en la documentación, Azure advierte de que sólo hay soporte para este t
 
 - No es posible (no he encontrado la forma) ejecutar la aplicación Sinatra ya que Azure ejecuta por defecto la orden para arrancar una aplicación de tipo Ruby on Rails.
 
-#### Segunda aproximación: Web APP en un contenedor Docker
+### Segunda aproximación: Web APP en un contenedor Docker
 
 Después de trastear un poco más e intentar que se desplegara la aplicación, decidí crear un contenedor para crear un entorno aislado que contuviese todo lo necesario y que no me creara problemas a la hora del despliegue. Esto es posible porque Azure permite desplegar desde un contenedor Docker por lo que quedaban solucionados todos los problemas descritos en la primera aproximación.
 
@@ -476,7 +476,7 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-## Aprovisionamiento
+### Aprovisionamiento
 
 Para realizar el aprovisionamiento de la máquina virtual, como se puede ver en el Vagrantfile, he usado Ansible, que seguirá las indicaciones descritas en el playbook para instalar y configurar lo que se ha estimado necesario.
 
