@@ -475,6 +475,7 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+Para crear la máquina podemos usar le gestor de tareas: `rake create-vm`.
 
 ### Aprovisionamiento
 
@@ -482,10 +483,14 @@ Para realizar el aprovisionamiento de la máquina virtual, como se puede ver en 
 
 El `playbook.yml` está situado en el directorio `provision` del repositorio ([playbook.yml](https://github.com/daraahh/proyectoIV/blob/master/provision/playbook.yml)).
 
-Está comentado tarea a tarea, pero voy complementarlo resumiendo el papel que desempeña aquí.
+Está comentado tarea a tarea, pero voy a complementarlo resumiendo el papel que desempeña aquí.
 
 Primero se declaran una serie de variables para parametrizar la creación y configuración de la máquina. Luego se crea un usuario `dev`, que he estimado oportuno, para no realizar las labores de desarrollo del proyecto desde el usuario de Vagrant por defecto y además se autoriza una clave pública para que se pueda acceder usando SSH desde el host.
 
 Luego se procede a instalar una serie de dependencias con `apt` y se instala el gestor de procesos. A continuación, se clona el proyecto y se instala el entorno virtual `rbenv` para instalar una versión compatible con el proyecto. Por último, se instalan dos gemas `rake` y `bundler`, necesarias para la construcción del proyecto.
 
-La máquina virtual creada está publicada en [Vagrant Cloud](https://app.vagrantup.com/darahh/boxes/proyectoiv). Para publicar la imagen en una plataforma como Vagrant Cloud, primero hay que empaquetar la máquina virtual. En este caso, lo he hecho con `vagrant package`, aunque existen otras heramientas. Este comando nos dará un archivo `.box` que podremos subir a la plataforma desde la web o usando el CLI con `vagrant box add`. 
+Para realizar el aprovisionamiento, se ha añadido una tarea al gestor de tareas, basta con ejecutar `rake provision-vm`. Si queremos crear y aprovisionar directamente se puede usar `rake create-provision-vm`.
+
+Una vez se ha realizado el aprovisionamiento, tenemos nuestra máquina lista y podemos acceder a ella con el usuario `vagrant` usando el comando `vagrant ssh` o con el usuario `dev` usando el cliente `ssh` como haríamos normalmente pero indicando el puerto 2222 en vez del 22.
+
+La máquina virtual creada está publicada en [Vagrant Cloud](https://app.vagrantup.com/darahh/boxes/proyectoiv). Para publicar la imagen en una plataforma como Vagrant Cloud, primero hay que empaquetar la máquina virtual. En este caso, lo he hecho con `vagrant package`, aunque existen otras heramientas. Este comando nos dará un archivo `.box` que podremos subir a la plataforma desde la web o usando el CLI con `vagrant box add`.
