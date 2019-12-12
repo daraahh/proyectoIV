@@ -488,4 +488,4 @@ Primero se declaran una serie de variables para parametrizar la creación y conf
 
 Luego se procede a instalar una serie de dependencias con `apt` y se instala el gestor de procesos. A continuación, se clona el proyecto y se instala el entorno virtual `rbenv` para instalar una versión compatible con el proyecto. Por último, se instalan dos gemas `rake` y `bundler`, necesarias para la construcción del proyecto.
 
-La máquina virtual creada está publicada en [Vagrant Cloud](https://app.vagrantup.com/darahh/boxes/proyectoiv)
+La máquina virtual creada está publicada en [Vagrant Cloud](https://app.vagrantup.com/darahh/boxes/proyectoiv). Para publicar la imagen en una plataforma como Vagrant Cloud, primero hay que empaquetar la máquina virtual. En este caso, lo he hecho con `vagrant package`, aunque existen otras heramientas. Este comando nos dará un archivo `.box` que podremos subir a la plataforma desde la web o usando el CLI con `vagrant box add`. 
